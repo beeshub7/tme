@@ -1,3 +1,14 @@
 #!/usr/bin/env node
 
-console.log('Running Tests...');
+const Runner = require("./runner.js");
+
+
+const runner = new Runner();
+
+const run = async () => {
+    await runner.collectFiles(process.cwd());
+    await runner.runTests();
+};
+
+
+run();
