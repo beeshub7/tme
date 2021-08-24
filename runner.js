@@ -1,5 +1,6 @@
 const fs = require("fs");
 const path = require("path");
+const chalk = require("chalk");
 
 
 class Runner {
@@ -9,6 +10,7 @@ class Runner {
 
     async runTests() {
         for (const file of this.testFiles) {
+            console.log(chalk.grey(`---- ${file.name}`));
             const beforeEaches = [];
 
             global.beforeEach = fn => {
@@ -19,18 +21,17 @@ class Runner {
                 beforeEaches.forEach(func => func());
                 try {
                     fn();
-                    console.log(`OK - ${desc}`);
+                    console.log(chalk.green(`OK - ${desc}`));
                 } catch (e) {
-                    console.log(`X - ${desc}`);
-                    console.log('\t', e.message);
+                    console.log(chalk.red(`X - ${desc}`));
+                    console.log(chalk.red('\t', e.message));
                 }
             };
 
             try {
                 require(file.name);
             } catch (e) {
-                console.log('Error loading file ', file.name);
-                console.log(e.message);
+                console.log(chalk.red(e));
             }
         }
     }
